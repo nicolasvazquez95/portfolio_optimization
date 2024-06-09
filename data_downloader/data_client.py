@@ -61,7 +61,7 @@ class PriceHistory():
         """
 
         all_data = []
-        to_date = []
+        to_date = datetime.today().date()
 
         # Calculate start and end point
         from_date = to_date - relativedelta(months=6)
