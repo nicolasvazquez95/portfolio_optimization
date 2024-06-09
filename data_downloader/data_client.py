@@ -121,13 +121,13 @@ class PriceHistory():
             historical_data = historical_data.json(),
             historical_data = historical_data['data']['tradesTable']['rows'] 
         
-        # Clean the data
-        for table_row in historical_data:
-            table_row['symbol'] = symbol,
-            table_row['close'] = float(table_row['close'].replace('$','')),
-            table_row['volume'] = float(table_row['volume'].replace('$','')),
-            table_row['open'] = float(table_row['open'].replace('$','')),
-            table_row['high'] = float(table_row['high'].replace('$','')),
-            table_row['low'] = float(table_row['low'].replace('$','')),
+            # Clean the data
+            for table_row in historical_data:
+                table_row['symbol'] = symbol,
+                table_row['close'] = float(table_row['close'].replace('$','')),
+                table_row['volume'] = int(table_row['volume'].replace(',','')),
+                table_row['open'] = float(table_row['open'].replace('$','')),
+                table_row['high'] = float(table_row['high'].replace('$','')),
+                table_row['low'] = float(table_row['low'].replace('$','')),
 
-        return historical_data
+            return historical_data
