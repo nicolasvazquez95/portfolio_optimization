@@ -40,7 +40,7 @@ class PriceHistory():
         - A URL to the Ticker symbol provided.
         """
 
-        parts = [self._api_url,self._api_service]
+        parts = [self._api_url,symbol,self._api_service]
         return '/'.join(parts)
     
     @property
@@ -119,7 +119,7 @@ class PriceHistory():
 
         # If it's ok, parse it
         if historical_data.ok:
-            historical_data = historical_data.json(),
+            historical_data = historical_data.json()
             historical_data = historical_data['data']['tradesTable']['rows'] 
         
             # Clean the data
