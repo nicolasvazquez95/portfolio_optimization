@@ -124,7 +124,7 @@ class PriceHistory():
         
             # Clean the data
             for table_row in historical_data:
-                table_row['symbol'] = symbol,
+                table_row['symbol'] = symbol
                 table_row['close'] = float(re.sub('[$,]', '', table_row['close']))
                 table_row['volume'] = int(table_row['volume'].replace(',',''))
                 table_row['open'] = float(re.sub('[$,]', '', table_row['open']))
