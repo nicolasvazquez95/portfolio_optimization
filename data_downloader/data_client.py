@@ -2,15 +2,18 @@
 import requests
 import pandas as pd
 import re
-
+# Other
 from typing import List, Dict
 from datetime import date,datetime,timedelta
 from dateutil.relativedelta import *
-
+# Fake User Agent
 from fake_useragent import UserAgent
+# Yahoo! Finance API
+import yfinance as yf
+import yahoo_fin.stock_info as yf_si
 
-# Class PriceHistory is the class in charge of downloading the data
-class PriceHistory():
+# Class PriceHistory is the class in charge of downloading the data. NASDAQ Version.
+class PriceHistoryNASDAQ():
     """
     This is a simple Class object for scrapping price data from the NASDAQ website.
     """
@@ -132,3 +135,43 @@ class PriceHistory():
                 table_row['low'] = float(re.sub('[$,]', '', table_row['low']))
 
             return historical_data
+
+# Class PriceHistory is the class in charge of downloading the data, Yahoo! Finance version.
+class PriceHistoryYF():
+    """
+    This is a simple Class object for scrapping price data from the Yahoo! Finance website.
+    """
+
+    def __init__(self,symbols: List[str]) -> None:
+        """
+        Initializes the PriceHistory client
+
+        Args:
+        - symbols (List[str]): A list of ticker symbols to pull quotes for.
+        """
+        self._symbols = symbols
+        self.price_data_frame = self._build_data_frame()
+    
+    @property
+    def symbols(self) -> List[str]:
+        """
+        Returns all the symbols currently being pulled.
+
+        Returns:
+        - List[str]: A list of ticker symbols.
+        """
+        return self._symbols
+    
+    def _build_data_frame(self) -> pd.DataFrame:
+        """
+        Builds a data frame with all the price data.
+
+        Returns:
+        - pd.Dataframe: A Pandas Dataframe with the data cleaned and sorted.
+        """
+        # Calculate start and end point
+        to_date = datetime.now().date()
+        from_date = to_date - relativedelta(months=6)
+
+        return yf.download(self._symbols,start=from_date,end=to_date)
+    
