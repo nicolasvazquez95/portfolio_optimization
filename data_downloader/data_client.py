@@ -145,7 +145,7 @@ class DolarPrices():
     def __init__(self) -> None:
         self._api_url =  'https://api.argentinadatos.com/v1/'
         self._api_service = 'cotizaciones/dolares' 
-        self.price_data_frame = self._build_data_frame()
+        
     def _build_url(self, symbol: str) -> str:
         """
         Builds a full URL.
@@ -160,15 +160,13 @@ class DolarPrices():
         parts = [self._api_url,self._api_service,symbol]
         return '/'.join(parts)
     
-    def _build_data_frame(self,symbol: str,to_date: str) -> pd.DataFrame:
+    def _build_data_frame(self,symbol: str) -> pd.DataFrame:
         """
         Builds a data frame with all the price data.
         
         Args:
         - symbol (str): The symbol you want to build a URL for.
         You can choose between oficial, blue, bolsa, cripto, mayorista, solidario, and turista
-        - from_date (str): The starting date to pull prices.
-        - to_date (str): The ending data to pull prices for.
         
         Returns:
         - pd.Dataframe: A Pandas Dataframe with the data cleaned and sorted.
@@ -177,7 +175,9 @@ class DolarPrices():
         
         dolar_data = requests.get(full_url).json()
         dolar_df = pd.DataFrame(dolar_data)
+        dolar_df['fecha'] = pd.to_datetime(dolar_df['fecha'])
         dolar_df = dolar_df.set_index('fecha')[['venta']] # Filter sell price of dollars
+        return dolar_df
         
            
 # Class PriceHistory is the class in charge of downloading the data, Yahoo! Finance version.
