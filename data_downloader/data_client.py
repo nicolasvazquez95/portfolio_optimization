@@ -136,6 +136,36 @@ class PriceHistoryNASDAQ():
 
             return historical_data
 
+# DolarPrices is the class in charge of downloading CCL dolar data, using DolarApi.com
+class DolarPrices():
+    """
+    This is a simple Class object for scrapping dolar price data in ARS from ArgentinaDatos API
+    """
+    
+    def __init__(self):
+        self._api_url =  'https://api.argentinadatos.com/v1/'
+        self._api_service = 'cotizaciones/dolares' 
+        self.price_data_frame = self._build_data_frame()
+    def _build_url(self, symbol: str) -> str:
+        """
+        Builds a full URL.
+
+        Args:
+        - symbol (str): The symbol you want to build a URL for.
+        You can choose between oficial, blue, bolsa, cripto, mayorista, solidario, and turista
+
+        Returns:
+        - A URL to the dollar symbol provided.
+        """
+        parts = [self._api_url,self._api_service,symbol]
+        return '/'.join(parts)
+    
+    def _grab_prices(self):
+        pass
+    
+    def _build_data_frame(self):
+        pass
+    
 # Class PriceHistory is the class in charge of downloading the data, Yahoo! Finance version.
 class PriceHistoryYF():
     """
@@ -151,6 +181,9 @@ class PriceHistoryYF():
         """
         self._symbols = symbols
         self.price_data_frame = self._build_data_frame()
+        
+    def _build_url():
+        pass
     
     @property
     def symbols(self) -> List[str]:
@@ -174,4 +207,3 @@ class PriceHistoryYF():
         from_date = to_date - relativedelta(months=6)
 
         return yf.download(self._symbols,start=from_date,end=to_date)
-    
