@@ -209,15 +209,20 @@ class PriceHistoryYF():
         """
         return self._symbols
     
-    def _build_data_frame(self) -> pd.DataFrame:
+    def _build_data_frame(self,from_date=None,to_date=None) -> pd.DataFrame:
         """
         Builds a data frame with all the price data.
 
+        Args:
+            Optional:
+            - from_date: Starting date (default: six months from to_date)
+            - to_date: Ending date (default: today)
         Returns:
         - pd.Dataframe: A Pandas Dataframe with the data cleaned and sorted.
         """
         # Calculate start and end point
-        to_date = datetime.now().date()
-        from_date = to_date - relativedelta(months=6)
-
+        if to_date==None:
+            to_date = datetime.now().date()
+        if from_date==None:
+            from_date = to_date - relativedelta(months=6)
         return yf.download(self._symbols,start=from_date,end=to_date)
