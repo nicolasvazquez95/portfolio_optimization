@@ -225,4 +225,6 @@ class PriceHistoryYF():
             to_date = datetime.now().date()
         if from_date==None:
             from_date = to_date - relativedelta(months=6)
-        return yf.download(self._symbols,start=from_date,end=to_date)
+        # Update data_frame and return
+        self.price_data_frame = yf.download(self._symbols,start=from_date,end=to_date)
+        return self.price_data_frame
